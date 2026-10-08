@@ -2,27 +2,27 @@ export default function StopsList({ stops }) {
   if (!stops || stops.length === 0) return null;
 
   return (
-    <div>
-      <h3 className="stops-list__title">
-        <span>🛑</span> Route Stops & Planned Rest Schedule
+    <div className="timeline-card">
+      <h3 className="timeline-title">
+        <span>🛑</span> Comprehensive Itinerary & Rest Schedule
       </h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div className="timeline-list">
         {stops.map((stop, idx) => {
           const type = stop.type || 'rest';
           return (
-            <div className={`stop-item stop-item--${type}`} key={idx}>
-              <span className={`stop-item__badge stop-item__badge--${type}`}>
+            <div className={`timeline-node timeline-node--${type}`} key={idx}>
+              <span className={`node-badge node-badge--${type}`}>
                 {getEmoji(type)} {type}
               </span>
-              <div className="stop-item__info">
-                <div className="stop-item__name">{stop.location_name || 'Designated Stop'}</div>
-                <div className="stop-item__detail">
+              <div className="node-content">
+                <div className="node-name">{stop.location_name || 'Designated Stop'}</div>
+                <div className="node-detail">
                   <strong>Mile {stop.mile_marker}</strong> • Duration: {stop.duration_hours} hr
                   {stop.reason && <span> • <em>{stop.reason}</em></span>}
                 </div>
                 {stop.arrival_time && (
-                  <div style={{ fontSize: '0.74rem', color: 'var(--text-accent)', marginTop: 2 }}>
-                    ⏱ Planned Arrival: {formatDate(stop.arrival_time)}
+                  <div style={{ fontSize: '0.74rem', color: 'var(--accent-cyan)', marginTop: 3, fontWeight: 600 }}>
+                    🕐 Planned Arrival: {formatDate(stop.arrival_time)}
                   </div>
                 )}
               </div>
@@ -49,6 +49,7 @@ function formatDate(isoStr) {
   try {
     const d = new Date(isoStr);
     return d.toLocaleString('en-US', {
+      weekday: 'short',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
